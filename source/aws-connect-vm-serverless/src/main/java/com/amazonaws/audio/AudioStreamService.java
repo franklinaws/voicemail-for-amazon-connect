@@ -20,7 +20,8 @@ import com.amazonaws.kinesisvideo.parser.mkv.StreamingMkvReader;
 import com.amazonaws.kinesisvideo.parser.utilities.FragmentMetadataVisitor;
 import com.amazonaws.kvstream.*;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.transcribe.TranscribeService;
+//import com.amazonaws.transcribe.TranscribeService;
+import com.amazonaws.transcribe.TranscribeMedicalService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +44,22 @@ public class AudioStreamService {
     private static final boolean RECORDINGS_PUBLIC_READ_ACL = Boolean.parseBoolean(System.getenv("RECORDINGS_PUBLIC_READ_ACL"));
     private static final String START_SELECTOR_TYPE = System.getenv("START_SELECTOR_TYPE");
     private static final Logger logger = LoggerFactory.getLogger(AudioStreamService.class);
+    private static boolean useMedicalTranscribe = false;
 
     private TranscribeService transcribeService;
+    private TranscribeMedicalService transcribeMedicalService;
     private ContactVoicemailRepo contactVoicemailRepo;
 
     public AudioStreamService(TranscribeService transcribeService, ContactVoicemailRepo contactVoicemailRepo) {
         this.transcribeService = transcribeService;
         this.contactVoicemailRepo = contactVoicemailRepo;
+    }
+    
+    //transcribe medical  
+    public AudioStreamService(TranscribeMedicalService transcribeMedicalService, ContactVoicemailRepo contactVoicemailRepo) {
+        this.transcribeMedicalService = transcribeMedicalService;
+        this.contactVoicemailRepo = contactVoicemailRepo;
+        this.useMedicalTranscribe = true;
     }
 
     public void processAudioStream(
@@ -122,7 +132,12 @@ public class AudioStreamService {
 
             if (transcribeEnabled) {
                 contactVoicemailRepo.createRecord(unixTime, agentId, true, "IN_PROGRESS", encryptionEnabled, uploadInfo);
-                transcribeService.transcribeMediaUrl(uploadInfo.getResourceUrl(), transcriptJobName, languageCode);
+                if (useMedicalTranscribe) {
+                    transcribeMedicalService.transcribeMediaUrl(uploadInfo.getResourceUrl(), transcriptJobName, languageCode);
+                }
+                else {
+                    transcribeService.transcribeMediaUrl(uploadInfo.getResourceUrl(), transcriptJobName, languageCode);
+                }
             } else {
                 contactVoicemailRepo.createRecord(unixTime, agentId, false, null, encryptionEnabled, uploadInfo);
             }
