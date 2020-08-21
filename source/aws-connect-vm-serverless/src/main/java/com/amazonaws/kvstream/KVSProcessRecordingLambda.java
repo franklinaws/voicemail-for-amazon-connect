@@ -23,7 +23,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
-import com.amazonaws.transcribe.TranscribeService;
+import com.amazonaws.transcribe.TranscribeMedicalService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ public class KVSProcessRecordingLambda implements RequestHandler<KinesisEvent, S
 
         KVStreamRecordingData recording = recordings.get(0);
         // Begin processing audio stream
-        TranscribeService transcribeService = new TranscribeService(TRANSCRIBE_REGION);
+        TranscribeMedicalService transcribeService = new TranscribeMedicalService(TRANSCRIBE_REGION);
         AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard();
         ContactVoicemailRepo contactVoicemailRepo = new ContactVoicemailRepo(
                 traceRecord.getContactId(),
