@@ -13,7 +13,6 @@
 
 package com.amazonaws.transcribe;
 
-
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.transcribe.AmazonTranscribe;
 import com.amazonaws.services.transcribe.AmazonTranscribeClient;

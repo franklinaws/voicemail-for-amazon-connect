@@ -20,7 +20,7 @@ import com.amazonaws.kinesisvideo.parser.mkv.StreamingMkvReader;
 import com.amazonaws.kinesisvideo.parser.utilities.FragmentMetadataVisitor;
 import com.amazonaws.kvstream.*;
 import com.amazonaws.regions.Regions;
-//import com.amazonaws.transcribe.TranscribeService;
+import com.amazonaws.transcribe.TranscribeService;
 import com.amazonaws.transcribe.TranscribeMedicalService;
 
 import org.slf4j.Logger;

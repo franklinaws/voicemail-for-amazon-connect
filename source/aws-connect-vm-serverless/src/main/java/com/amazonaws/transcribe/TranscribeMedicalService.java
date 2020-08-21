@@ -15,6 +15,7 @@ package com.amazonaws.transcribe;
 
 
 import com.amazonaws.regions.Regions;
+import com.amazonaws.AmazonWebServiceRequest;
 import com.amazonaws.services.transcribe.AmazonTranscribe;
 import com.amazonaws.services.transcribe.AmazonTranscribeClient;
 import com.amazonaws.services.transcribe.model.*;
@@ -34,7 +35,7 @@ public class TranscribeMedicalService {
     }
 
     public void transcribeMediaUrl(String url, String jobName, String languageCode) {
-        StartMedicalTranscriptionRequest request = new StartMedicalTranscriptionRequest();
+        StartMedicalTranscriptionJobRequest request = new StartMedicalTranscriptionJobRequest();
         //StartTranscriptionJobRequest request = new StartTranscriptionJobRequest();
         // https://docs.amazonaws.cn/AWSJavaSDK/latest/javadoc//index.html?com/amazonaws/services/transcribe/AmazonTranscribeClient.html
         request.withLanguageCode(LanguageCode.fromValue(languageCode));
@@ -45,7 +46,7 @@ public class TranscribeMedicalService {
         request.setMedicalTranscriptionJobName(jobName);
         request.withMediaFormat("wav");
         //StartTranscriptionJobResult result = transcribe.startTranscriptionJob(request);
-        StartMedicalTranscriptionJobResult result = transcribe.startTranscriptionJob(request);
+        StartMedicalTranscriptionJobResult result = transcribe.startMedicalTranscriptionJob(request);
     }
 
     public void getTranscript(String jobName) {
